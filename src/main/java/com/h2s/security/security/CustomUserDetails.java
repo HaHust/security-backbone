@@ -23,7 +23,8 @@ public class CustomUserDetails implements UserDetails {
     private Integer enabled;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public CustomUserDetails(String email, String password, Integer enabled, Collection<? extends GrantedAuthority> authorities) {
+    public CustomUserDetails(Integer Id, String email, String password, Integer enabled, Collection<? extends GrantedAuthority> authorities) {
+        this.id = Id;
         this.email = email;
         this.password = password;
         this.enabled = enabled;
@@ -36,6 +37,7 @@ public class CustomUserDetails implements UserDetails {
         }).collect(Collectors.toList());
 
         return new CustomUserDetails(
+                user.getId(),
                 user.getEmail(),
                 user.getPassword(),
                 user.getEnabled(),
@@ -46,6 +48,10 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.authorities;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     @Override

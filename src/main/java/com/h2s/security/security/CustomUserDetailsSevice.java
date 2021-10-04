@@ -12,10 +12,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.provisioning.UserDetailsManager;
+import org.springframework.security.web.FilterChainProxy;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.FilterChain;
+import javax.swing.tree.ExpandVetoException;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CustomUserDetailsSevice implements UserDetailsService, UserDetailsManager {
@@ -32,6 +36,13 @@ public class CustomUserDetailsSevice implements UserDetailsService, UserDetailsM
         if(user.size() == 0)
             throw new UsernameNotFoundException("User details not found for the User"+ username);
         return CustomUserDetails.create(user.get(0));
+    }
+
+    @Transactional
+    public UserDetails loadUserById(Integer id) {
+        Optional<User> user = userRepository.findById(id);
+
+        return CustomUserDetails.create(user.get());
     }
 
 
